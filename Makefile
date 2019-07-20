@@ -1,8 +1,8 @@
 CC = gcc
 #CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -g
-SRCS = main.c ft_printf.c convert_arg.c
-HDRS = ft_printf.h convert_arg.h
+SRCS = main.c ft_printf.c convert_arg.c convert_utils.c
+HDRS = ft_printf.h convert_arg.h convert_utils.h
 OUTS = $(SRCS:.c=.o)
 NAME = ft_printf
 

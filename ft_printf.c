@@ -6,42 +6,78 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 18:07:24 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/19 19:09:26 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/20 20:50:06 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "ft_printf.h"
+#include "convert_arg.h"
 
-/*
-static int	parse_format(const char *s, char **conv)
+void		add_to_buffer(t_info *info, char c)
 {
-	char	*sp;
-	int		i;
-
-	i = 0;
-	sp = (char*)s;
-	while (*sp != '\0')
+	if (info->buf_cur_size == BUFF_SIZE)
 	{
-		if (*sp == '%')
-		{
-			*conv = sp;
-			return (i);
-		}
-		sp++;
-		i++;
+		write(1, info->buf, info->buf_cur_size);
+		info->buf_cur_size = 0;
 	}
-	*conv = NULL;
-	return (i);
+	info->buf[info->buf_cur_size] = c;
+	info->buf_cur_size++;
 }
-*/
 
-static int	convert_format(t_info *info)
+static int	convert_format(t_info *info, t_param param)
 {
-	if (sp[1] == 'd')
+	if (*info->sp == 'x')
+	{
+		conv_x(info, param);
+	}
+	info->sp++;
 	return (0);
+}
+
+static int	convert_flag(t_info *info)
+{
+	t_param	param;
+
+	param.prec = 3;
+	param.field_len = 5;
+	param.attrib = 0;
+	info->sp++;
+	if (*info->sp == 'h')
+	{
+		info->sp++;
+		param.flag = f_h;
+		if (*info->sp == 'h')
+		{
+			info->sp++;
+			param.flag = f_hh;
+			convert_format(info, param);
+		}
+		else
+			convert_format(info, param);
+	}
+	else if (*info->sp == 'l')
+	{
+		info->sp++;
+		param.flag = f_l;
+		if (*info->sp == 'l')
+		{
+			info->sp++;
+			param.flag = f_ll;
+			convert_format(info, param);
+		}
+		else
+			convert_format(info, param);
+	}
+	else if (*info->sp == 'L')
+	{
+		info->sp++;
+		param.flag = f_maj_l;
+		convert_format(info, param);
+	}
+	else
+		convert_format(info, param);
 }
 
 int			ft_printf(const char *format, ...)
@@ -51,21 +87,18 @@ int			ft_printf(const char *format, ...)
 
 	if (!format)
 		return (0);
-	sp = (char*)format;
+	info.sp = (char*)format;
 	info.buf_cur_size = 0;
-	while (*sp != '\0')
+	va_start(info.va, format);
+	while (*info.sp != '\0')
 	{
-		if (*sp == '%')
-			convert_format(&info);
-		info.buf[info.buf_cur_size] = *info.sp;
-		info.buf_cur_size++;
-		if (info.buf_cur_size >= BUFF_SIZE)
-		{
-			write(1, info.buf, info.buf_cur_size);
-			info.buf_cur_size = 0;
-		}
+		if (*info.sp == '%')
+			convert_flag(&info);
+		add_to_buffer(&info, *info.sp);
 		info.sp++;
 	}
-	write(1, info.buf, info.buf_cur_size);
+	va_end(info.va);
+	if (info.buf_cur_size > 0)
+		write(1, info.buf, info.buf_cur_size);
 	return (0);
 }

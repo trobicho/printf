@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 18:37:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/19 18:59:47 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/20 20:46:39 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	main(int ac, char **av)
 {
-	ft_printf("test %d\n", 12);
+	ft_printf("test %hhx\n", 12123);
+	printf("true %###05.3hhd\n", 12123);
+	printf("true %-5hhs\n", "fdf");
 	return (0);
 }
