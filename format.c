@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 08:20:30 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 11:32:38 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/22 12:08:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,36 @@ static int	convert_format(t_info *info, t_param param)
 {
 	unsigned char	c;
 
-	if (*info->sp == 'x')
-	{
+	param.param = *info->sp;
+	if (param.prec != -1 && (param.attrib & A_0))
+		param.attrib &= ~A_0;
+	if (*info->sp == 'x' || *info->sp == 'X')
 		conv_x(info, param);
+	if (*info->sp == 'd' || *info->sp == 'i')
+	{
+		param.param = 'd';
+		conv_d(info, param);
 	}
+	if (*info->sp == 'u')
+		conv_u(info, param);
+	if (*info->sp == 'o')
+		conv_o(info, param);
 	else if (*info->sp == '%')
-		add_to_buffer(info, '%');
+	{
+		param.prec = -1;
+		conv_c(info, param);
+	}
 	else if (*info->sp == 'c')
 	{
-		c = (unsigned char)va_arg(info->va, int);
-		add_to_buffer(info, c);
+		param.prec = -1;
+		conv_c(info, param);
 	}
+	else if (*info->sp == 's')
+		conv_s(info, param);
 	info->sp++;
 	return (0);
 }
-	
+
 static int	get_flag(t_info *info, t_param *param)
 {
 	if (*info->sp == 'h')
@@ -64,11 +79,24 @@ static int	get_param(t_info *info, t_param *param)
 	else if (*info->sp == '0')
 		param->attrib |= A_0;
 	else if (*info->sp == '+')
+	{
 		param->attrib |= A_PLUS;
+		param->attrib &= ~A_SPACE;
+	}
 	else if (*info->sp == '-')
 		param->attrib |= A_MINUS;
 	else if (*info->sp == ' ')
-		param->attrib |= A_SPACE;
+	{
+		if (!(param->attrib & A_PLUS))
+			param->attrib |= A_SPACE;
+	}
+	else if (*info->sp == '.')
+	{
+		info->sp++;
+		param->prec = littletoi(info);
+	}
+	else if (*info->sp > '0' && *info->sp <= '9')
+		param->field_len = littletoi(info);
 	else
 		return (0);
 	return (1);
@@ -76,15 +104,17 @@ static int	get_param(t_info *info, t_param *param)
 
 int			parse_format(t_info *info)
 {
-	int r;
+	int		r;
 	t_param	param;
 
-	param.prec = 3;
-	param.field_len = 5;
+	param.flag = f_none;
+	param.prec = -1;
+	param.field_len = 0;
 	param.attrib = 0;
 	while (get_param(info, &param))
 	{
 		info->sp++;
 	}
 	convert_format(info, param);
+	return (0);
 }

@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   littletoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 18:37:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:08:35 by trobicho         ###   ########.fr       */
+/*   Created: 2019/07/22 11:58:58 by trobicho          #+#    #+#             */
+/*   Updated: 2019/07/22 12:06:08 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	main(int ac, char **av)
+unsigned int	littletoi(t_info *info)
 {
-	ft_printf("test (%5#-%)\n", 'c');
-	printf("true (%5#-%)\n", 'c');
+	unsigned int	r;
 
-	ft_printf("test (%-5.2s)\n", "fdf", 12);
-	printf("true (%-5.2s)\n", "fdf");
-	return (0);
+	r = 0;
+	while (*info->sp > '0' && *info->sp < '9')
+	{
+		r *= 10;
+		r += *info->sp - '0';
+		info->sp++;
+	}
+	info->sp--;
+	return (r);
 }

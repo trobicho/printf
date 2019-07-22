@@ -6,34 +6,66 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 19:18:58 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 11:50:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/22 11:01:25 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "convert_arg.h"
 #include "convert_utils.h"
+#include "cast.h"
+#include <string.h>
 
-int	conv_x(t_info *info, t_param param)
+static size_t	get_len_s(t_param param, const char *str)
 {
-	unsigned long long int	p;
-	unsigned long long int	x;
-	char					c;
-	int						l;
+	size_t	i;
 
-	x = (unsigned long long)get_decimal_cast(info, param);
-	p = count_pow(x, 16, &l);
-	field_add(info, param, l, 0);
-	while (p >= 1)
+	i = 0;
+	if (param.prec >= 0)
 	{
-		if (x / p < 10)
-			c = (x / p) + '0';
-		else
-			c = (x / p) - 10 + 'a';
-		add_to_buffer(info, c);
-		x = x % p;
-		p /= 16;
+		while (str[i] != '\0' && i != (size_t)param.prec)
+		{
+			i++;
+		}
 	}
-	if (param.attrib & A_MINUS)
-		field_add(info, param, l, 1);
+	else
+	{
+		while (str[i] != '\0')
+		{
+			i++;
+		}
+	}
+	return (i);
+}
+
+int				conv_c(t_info *info, t_param param)
+{
+	unsigned char c;
+
+	if (param.param == '%')
+		c = '%';
+	else
+		c = (unsigned char)va_arg(info->va, int);
+	field_take_care(info, param, 1, 0);
+	add_to_buffer(info, c);
+	field_take_care(info, param, 1, 1);
+	return (0);
+}
+
+int				conv_s(t_info *info, t_param param)
+{
+	const char	*s;
+	size_t		len;
+	size_t		i;
+
+	s = (const char*)va_arg(info->va, const char *);
+	len = get_len_s(param, s);
+	field_take_care(info, param, len, 0);
+	i = 0;
+	while (i < len)
+	{
+		add_to_buffer(info, s[i]);
+		i++;
+	}
+	field_take_care(info, param, len, 1);
 	return (0);
 }

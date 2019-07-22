@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   grisu.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 18:37:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:08:35 by trobicho         ###   ########.fr       */
+/*   Created: 2019/07/22 13:40:53 by trobicho          #+#    #+#             */
+/*   Updated: 2019/07/22 13:42:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef GRISU_H
+# define GRISU_H
 
-int	main(int ac, char **av)
+typedef struct	s_grisu_fp
 {
-	ft_printf("test (%5#-%)\n", 'c');
-	printf("true (%5#-%)\n", 'c');
+	uint64_t	f;
+	int			e;
+}				t_grisu_fp;
 
-	ft_printf("test (%-5.2s)\n", "fdf", 12);
-	printf("true (%-5.2s)\n", "fdf");
-	return (0);
-}
+#endif

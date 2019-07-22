@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 08:20:01 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 08:50:04 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/22 12:01:14 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,17 @@
 # define A_MINUS	4
 # define A_PLUS		8
 # define A_SPACE	16
+# define A_NEG		32
 
-
-typedef enum	{f_none, f_h, f_hh, f_l, f_ll, f_maj_l}t_flag;
+typedef enum
+{
+	f_none,
+	f_h,
+	f_hh,
+	f_l,
+	f_ll,
+	f_maj_l
+}	t_flag;
 
 typedef struct	s_param
 {
@@ -30,7 +38,9 @@ typedef struct	s_param
 	int			prec;
 	int			field_len;
 	int			attrib;
+	char		param;
 }				t_param;
 
 int				parse_format(t_info *info);
+unsigned int	littletoi(t_info *info);
 #endif

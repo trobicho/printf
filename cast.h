@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cast.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 18:37:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:08:35 by trobicho         ###   ########.fr       */
+/*   Created: 2019/07/22 08:26:23 by trobicho          #+#    #+#             */
+/*   Updated: 2019/07/22 08:31:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef CAST_H
+# define CAST_H
 
-int	main(int ac, char **av)
-{
-	ft_printf("test (%5#-%)\n", 'c');
-	printf("true (%5#-%)\n", 'c');
+# include "format.h"
 
-	ft_printf("test (%-5.2s)\n", "fdf", 12);
-	printf("true (%-5.2s)\n", "fdf");
-	return (0);
-}
+long long int			get_decimal_cast(t_info *info, t_param param);
+unsigned long long int	get_unsigned_decimal_cast(t_info *info, t_param param);
+#endif

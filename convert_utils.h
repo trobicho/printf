@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 20:18:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 11:50:23 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/22 09:19:21 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "format.h"
 
-unsigned int	count_pow(unsigned int n, int p, int *len);
-int				field_add(t_info *info, t_param param, int l, int after);
-long long int	get_decimal_cast(t_info *info, t_param param);
+unsigned long long int	count_pow(unsigned long long int n, int p, int *len);
+int						field_take_care(t_info *info, t_param param
+	, int l, int after);
 #endif

@@ -1,23 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   grisu.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/19 18:37:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:08:35 by trobicho         ###   ########.fr       */
+/*   Created: 2019/07/22 13:42:39 by trobicho          #+#    #+#             */
+/*   Updated: 2019/07/22 13:42:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-
-int	main(int ac, char **av)
-{
-	ft_printf("test (%5#-%)\n", 'c');
-	printf("true (%5#-%)\n", 'c');
-
-	ft_printf("test (%-5.2s)\n", "fdf", 12);
-	printf("true (%-5.2s)\n", "fdf");
-	return (0);
-}
+#include "grisu.h"
