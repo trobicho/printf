@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 08:20:30 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:08:13 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/23 13:57:04 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	convert_format(t_info *info, t_param param)
 	}
 	else if (*info->sp == 's')
 		conv_s(info, param);
+	else if (*info->sp == 'f')
+		conv_lf(info, param);
 	info->sp++;
 	return (0);
 }
