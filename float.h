@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 13:06:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/23 14:11:11 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/24 14:53:35 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@ typedef union
 }				t_double_union;
 
 void conv_lf(t_info *info, t_param *param);
+void	conv_lf_bullshit(t_info *info, t_param param);
 #endif
