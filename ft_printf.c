@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 18:07:24 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 08:51:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/25 14:32:48 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void		add_to_buffer(t_info *info, char c)
 	}
 	info->buf[info->buf_cur_size] = c;
 	info->buf_cur_size++;
+	info->buf_total_size++;
 }
 
 int			ft_printf(const char *format, ...)
@@ -35,6 +36,7 @@ int			ft_printf(const char *format, ...)
 		return (0);
 	info.sp = (char*)format;
 	info.buf_cur_size = 0;
+	info.buf_total_size = 0;
 	va_start(info.va, format);
 	while (*info.sp != '\0')
 	{
@@ -49,5 +51,5 @@ int			ft_printf(const char *format, ...)
 	va_end(info.va);
 	if (info.buf_cur_size > 0)
 		write(1, info.buf, info.buf_cur_size);
-	return (0);
+	return (info.buf_total_size);
 }

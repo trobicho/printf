@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 13:06:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/24 14:53:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:25:59 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "format.h"
 # include <stdint.h>
 
-typedef	struct	s_doublefield
+typedef	struct	s_double_field
 {
 	uint64_t	mantissa : 52;
 	uint64_t	exp : 11;
@@ -30,6 +30,5 @@ typedef union
 	t_double_field	field;
 }				t_double_union;
 
-void conv_lf(t_info *info, t_param *param);
-void	conv_lf_bullshit(t_info *info, t_param param);
+void			conv_f(t_info *info, t_param param);
 #endif

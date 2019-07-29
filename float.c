@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 13:06:25 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/24 16:31:31 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:55:27 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,81 @@
 #include "convert_utils.h"
 #include "cast.h"
 
-static int	pow_double(t_param param, double d, double *ph, double *pl)
+void		print_double_union(t_double_union d)
 {
-	double	r;
-	double	d_tmp;
-	int		len;
-	int		p;
+	uint64_t		and;
+	char			s[54];
+	int				i;
 
+	printf("[%llx ", d.field.sign);
+	printf("%lld ", (int64_t)(d.field.exp) - 1023);
+	printf("%llx", d.field.mantissa);
+	s[0] = '1';
+	s[53] = '\0';
+	i = 0;
+	and = 1;
+	while (i < 52)
+	{
+		s[52 - i] = (d.field.mantissa & and) ? '1' : '0';
+		and <<= 1;
+		i++;
+	}
+	printf(" [%s]]\n", s);
+}
+
+static void	add_to_buffer_mantissa_special_case(t_info *info, t_double_union d)
+{
+	if (d.field.mantissa == 0)
+	{
+		if (d.field.sign)
+			add_to_buffer(info, '-');
+		add_to_buffer(info, 'i');
+		add_to_buffer(info, 'n');
+		add_to_buffer(info, 'f');
+	}
+	else
+	{
+		add_to_buffer(info, 'n');
+		add_to_buffer(info, 'a');
+		add_to_buffer(info, 'n');
+	}
+}
+
+static int	mantissa_detect_special_case(t_info *info, t_param param, double d)
+{
+	int				len;
+	t_double_union	d_union;
+
+	d_union.f = d;
+	//print_double_union(d_union);
+	if (d_union.field.exp == 0x7FF)
+	{
+		len = 3;
+		if (d_union.field.mantissa == 0)
+		{
+			if (d_union.field.sign)
+				len++;
+		}
+		param.prec = -1;
+		field_take_care(info, param, len, 0);
+		add_to_buffer_mantissa_special_case(info, d_union);
+		field_take_care(info, param, len, 1);
+		return (1);
+	}
+	return (0);
+}
+
+static int	pow_double(t_param param, long double d
+	, long double *ph, long double *pl)
+{
+	long double	r;
+	long double	d_tmp;
+	int			len;
+	int			p;
+
+	param.prec = (param.prec == -1) ? 6 : param.prec;
 	len = 1;
-	*ph = 1;
+	*ph = 1.;
 	d_tmp = d;
 	while (d_tmp >= 10.0)
 	{
@@ -30,37 +96,37 @@ static int	pow_double(t_param param, double d, double *ph, double *pl)
 		*ph *= 10.0;
 		len += 1;
 	}
-	*pl = 1;
+	*pl = 1.;
 	d_tmp = d - (int64_t)d;
-	if (param.prec == -1)
-		param.prec = 6;
-	p = 0;
-	while (d_tmp > 0.0 && p < param.prec)
+	p = -1;
+	while (++p < param.prec)
 	{
-		d_tmp *= 10.0;
-		d_tmp = d_tmp - (int64_t)d_tmp;
+		d_tmp = (d_tmp * 10.0) - (int64_t)(d_tmp * 10.0);
 		*pl /= 10.0;
 		len += 1;
-		p++;
 	}
 	return (len);
 }
 
-void	conv_lf_bullshit(t_info *info, t_param param)
+void		conv_f(t_info *info, t_param param)
 {
-	double	d;
-	double	ph;
-	double	pl;
-	int		len;
-	int		c;
+	long double	d;
+	long double	ph;
+	long double	pl;
+	int			len;
+	int			c;
 
-	d = (double)va_arg(info->va, double);
+	if (param.flag == f_maj_l)
+		d = (long double)va_arg(info->va, long double);
+	else
+		d = (long double)va_arg(info->va, double);
+	if ((len = mantissa_detect_special_case(info, param, (double) d)) != 0)
+		return ;
 	len = pow_double(param, d, &ph, &pl);
-
 	if (pl < 0.5 || (param.attrib & A_HASH))
 		len += 1;
-	field_take_care(info, param, len, 0);
 	param.prec = -1;
+	field_take_care(info, param, len, 0);
 	while (ph + ph > pl)
 	{
 		c = (int)(d / ph);
@@ -71,33 +137,4 @@ void	conv_lf_bullshit(t_info *info, t_param param)
 		ph /= 10;
 	}
 	field_take_care(info, param, len, 1);
-
-}
-
-void	print_double_union(t_double_union d)
-{
-	printf("%llx ", d.field.sign);
-	printf("%lld ", (int64_t)(d.field.exp) - 1023);
-	printf("%llx", d.field.mantissa);
-
-	char s[54];
-
-	s[0] = '1';
-	s[53] = '\0';
-
-	uint64_t and = 1;
-	for (int i = 0; i < 52; i++)
-	{
-		s[52 - i] = (d.field.mantissa & and) ? '1' : '0';
-		and <<= 1;
-	}
-	printf(" [%s]\n", s);
-}
-
-void	conv_lf(t_info *info, t_param *param)
-{
-	t_double_union	d;
-
-	d.f = (double)va_arg(info->va, double);
-	print_double_union(d);
 }

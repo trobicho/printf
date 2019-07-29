@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 08:20:01 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 12:01:14 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/29 17:26:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct	s_param
 	char		param;
 }				t_param;
 
+int				convert_format(t_info *info, t_param param);
 int				parse_format(t_info *info);
 unsigned int	littletoi(t_info *info);
 #endif

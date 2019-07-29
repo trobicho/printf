@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 18:05:50 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/21 08:46:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/07/25 14:33:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 
 typedef struct	s_info
 {
-	char		*sp;
-	char		buf[BUFF_SIZE];
-	int			buf_cur_size;
-	va_list		va;
+	char			*sp;
+	char			buf[BUFF_SIZE];
+	unsigned int	buf_cur_size;
+	unsigned int	buf_total_size;
+	va_list			va;
 }				t_info;
 
 void			add_to_buffer(t_info *info, char c);
