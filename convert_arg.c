@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 19:18:58 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/29 17:09:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/01 13:19:04 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int				conv_s(t_info *info, t_param param)
 	return (0);
 }
 
-int	conv_p(t_info *info, t_param param)
+int				conv_p(t_info *info, t_param param)
 {
 	unsigned long long int	p;
 	unsigned long long int	x;

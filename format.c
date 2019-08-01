@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 08:20:30 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/29 17:33:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/01 13:49:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,20 @@ static int	get_flag(t_info *info, t_param *param)
 	return (1);
 }
 
+static int	get_param2(t_info *info, t_param *param)
+{
+	if (*info->sp == '.')
+	{
+		info->sp++;
+		param->prec = littletoi(info);
+	}
+	else if (*info->sp > '0' && *info->sp <= '9')
+		param->field_len = littletoi(info);
+	else
+		return (0);
+	return (1);
+}
+
 static int	get_param(t_info *info, t_param *param)
 {
 	if (get_flag(info, param))
@@ -57,31 +71,25 @@ static int	get_param(t_info *info, t_param *param)
 		if (!(param->attrib & A_PLUS))
 			param->attrib |= A_SPACE;
 	}
-	else if (*info->sp == '.')
-	{
-		info->sp++;
-		param->prec = littletoi(info);
-	}
-	else if (*info->sp > '0' && *info->sp <= '9')
-		param->field_len = littletoi(info);
 	else
-		return (0);
+		return (get_param2(info, param));
 	return (1);
 }
 
 int			parse_format(t_info *info)
 {
-	int		r;
 	t_param	param;
 
 	param.flag = f_none;
 	param.prec = -1;
 	param.field_len = 0;
 	param.attrib = 0;
+	info->sp++;
 	while (get_param(info, &param))
 	{
 		info->sp++;
 	}
-	convert_format(info, param);
+	if (convert_format(info, param))
+		info->sp++;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 18:07:24 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/25 14:32:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/01 13:47:33 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void		add_to_buffer(t_info *info, char c)
 
 int			ft_printf(const char *format, ...)
 {
-	char	p;
 	t_info	info;
 
 	if (!format)
@@ -41,12 +40,12 @@ int			ft_printf(const char *format, ...)
 	while (*info.sp != '\0')
 	{
 		if (*info.sp == '%')
-		{
-			info.sp++;
 			parse_format(&info);
+		else
+		{
+			add_to_buffer(&info, *info.sp);
+			info.sp++;
 		}
-		add_to_buffer(&info, *info.sp);
-		info.sp++;
 	}
 	va_end(info.va);
 	if (info.buf_cur_size > 0)

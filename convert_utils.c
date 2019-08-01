@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 20:17:59 by trobicho          #+#    #+#             */
-/*   Updated: 2019/07/22 10:16:18 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/01 13:49:04 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void				field_add(t_info *info, int n, char c)
 
 static void				field_add_sign(t_info *info, t_param param, int after)
 {
-	if (param.param == 'd' && !after)
+	if ((param.param == 'd' || param.param == 'f') && !after)
 	{
 		if ((param.attrib & A_NEG))
 			add_to_buffer(info, '-');
@@ -59,7 +59,7 @@ unsigned long long int	count_pow(unsigned long long int n, int p, int *len)
 
 	r = 1;
 	*len = 1;
-	while (n >= p)
+	while (n >= (unsigned long long int)p)
 	{
 		n /= p;
 		r *= p;
